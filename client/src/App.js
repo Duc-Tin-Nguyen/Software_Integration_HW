@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ItemForm from './components/ItemForm';
+import ItemList from './components/ItemList';
 
 function App() {
+  const [updatedItemId, setUpdatedItemId] = useState(null);
+
+  const handleItemCreated = (newItem) => {
+    // Handle the newly created item, such as updating state or performing other actions
+  };
+
+  const handleItemUpdated = (id, newData) => {
+    setUpdatedItemId(id);
+    // Handle the updated item, such as updating state or performing other actions
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Item Management</h1>
+      <ItemForm onItemCreated={handleItemCreated} />
+      <h2>Items</h2>
+      <ItemList onItemUpdated={handleItemUpdated} />
+      {updatedItemId && <p>This item with ID {updatedItemId} has been updated.</p>}
     </div>
   );
 }
