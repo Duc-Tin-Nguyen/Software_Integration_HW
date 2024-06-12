@@ -3,13 +3,17 @@ import { createItem } from '../services/api';
 
 const ItemForm = ({ onItemCreated }) => {
   const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newItem = await createItem({ name });
-      onItemCreated(newItem);
+      const newItem = await createItem({ name, description });
+      if (onItemCreated) {
+        onItemCreated(newItem);
+      }
       setName('');
+      setDescription('');
     } catch (error) {
       console.error('Error creating item:', error);
     }
@@ -23,6 +27,11 @@ const ItemForm = ({ onItemCreated }) => {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
+      <textarea
+        placeholder="Enter item description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      ></textarea>
       <button type="submit">Add Item</button>
     </form>
   );
