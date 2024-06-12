@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
 import ItemForm from './components/ItemForm';
 import ItemList from './components/ItemList';
+import './App.css';
 
 function App() {
-  const [updatedItemId, setUpdatedItemId] = useState(null);
+  const [items, setItems] = useState([]);
 
   const handleItemCreated = (newItem) => {
-    // Handle the newly created item, such as updating state or performing other actions
-  };
-
-  const handleItemUpdated = (id, newData) => {
-    setUpdatedItemId(id);
-    // Handle the updated item, such as updating state or performing other actions
+    setItems([...items, newItem]);
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Item Management</h1>
       <ItemForm onItemCreated={handleItemCreated} />
       <h2>Items</h2>
-      <ItemList onItemUpdated={handleItemUpdated} />
-      {updatedItemId && <p>This item with ID {updatedItemId} has been updated.</p>}
+      <ItemList items={items} setItems={setItems} />
     </div>
   );
 }

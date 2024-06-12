@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createItem } from '../services/api';
+import '../App.css';
 
 const ItemForm = ({ onItemCreated }) => {
   const [name, setName] = useState('');
@@ -9,9 +10,7 @@ const ItemForm = ({ onItemCreated }) => {
     e.preventDefault();
     try {
       const newItem = await createItem({ name, description });
-      if (onItemCreated) {
-        onItemCreated(newItem);
-      }
+      onItemCreated(newItem);
       setName('');
       setDescription('');
     } catch (error) {
