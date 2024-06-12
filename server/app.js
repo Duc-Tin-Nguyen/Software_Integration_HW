@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
@@ -40,9 +41,10 @@ connectDB();
 const app = express();
 app.use(express.json());
 
+// Allow requests from all origins
+app.use(cors());
+
 // Define routes
 app.use('/api/items', require('./routes/itemRoutes'));
 
 module.exports = app;
-
-//
