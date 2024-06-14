@@ -6,6 +6,7 @@ const ItemList = ({ items, setItems }) => {
   const [editingItemId, setEditingItemId] = useState(null);
   const [editingItemName, setEditingItemName] = useState('');
   const [editingItemDescription, setEditingItemDescription] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchItemsData = async () => {
@@ -14,6 +15,7 @@ const ItemList = ({ items, setItems }) => {
         setItems(itemsData);
       } catch (error) {
         console.error('Error fetching items:', error);
+        setError('Failed to fetch items. Please try again.');
       }
     };
     fetchItemsData();
@@ -25,6 +27,7 @@ const ItemList = ({ items, setItems }) => {
       setItems(items.filter(item => item._id !== id));
     } catch (error) {
       console.error('Error deleting item:', error);
+      setError('Failed to delete item. Please try again.');
     }
   };
 
@@ -37,48 +40,52 @@ const ItemList = ({ items, setItems }) => {
       setEditingItemDescription('');
     } catch (error) {
       console.error('Error updating item:', error);
+      setError('Failed to update item. Please try again.');
     }
   };
 
   return (
-    <ul>
-      {items.map((item) => (
-        <li key={item._id}>
-          {editingItemId === item._id ? (
-            <div>
-              <input
-                type="text"
-                value={editingItemName}
-                onChange={(e) => setEditingItemName(e.target.value)}
-              />
-              <textarea
-                value={editingItemDescription}
-                onChange={(e) => setEditingItemDescription(e.target.value)}
-              ></textarea>
-              <div className="edit-buttons">
-                <button onClick={() => handleUpdate(item._id)}>Save</button>
-                <button onClick={() => setEditingItemId(null)}>Cancel</button>
-              </div>
-            </div>
-          ) : (
-            <div>
+    <div>
+      {error && <div className="error-message">{error}</div>}
+      <ul>
+        {items.map((item) => (
+          <li key={item._id}>
+            {item && editingItemId === item._id ? (
               <div>
-                <strong>{item.name}</strong>
-                <p>{item.description}</p>
+                <input
+                  type="text"
+                  value={editingItemName}
+                  onChange={(e) => setEditingItemName(e.target.value)}
+                />
+                <textarea
+                  value={editingItemDescription}
+                  onChange={(e) => setEditingItemDescription(e.target.value)}
+                ></textarea>
+                <div className="edit-buttons">
+                  <button onClick={() => handleUpdate(item._id)}>Save</button>
+                  <button onClick={() => setEditingItemId(null)}>Cancel</button>
+                </div>
               </div>
-              <div className="edit-buttons">
-                <button onClick={() => {
-                  setEditingItemId(item._id);
-                  setEditingItemName(item.name);
-                  setEditingItemDescription(item.description);
-                }}>Edit</button>
-                <button onClick={() => handleDelete(item._id)}>Delete</button>
+            ) : (
+              <div>
+                <div>
+                  <strong>{item.name}</strong>
+                  <p>{item.description}</p>
+                </div>
+                <div className="edit-buttons">
+                  <button onClick={() => {
+                    setEditingItemId(item._id);
+                    setEditingItemName(item.name);
+                    setEditingItemDescription(item.description);
+                  }}>Edit</button>
+                  <button onClick={() => handleDelete(item._id)}>Delete</button>
+                </div>
               </div>
-            </div>
-          )}
-        </li>
-      ))}
-    </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
