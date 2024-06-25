@@ -1,0 +1,12 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+commit_message=$(cat "$1")
+
+# Define the regular expression for the allowed commit message format
+if ! echo "$commit_message" | grep -Eq "^(feat|fix|test|chore): .+$"; then
+  echo "Invalid commit message format."
+  echo "Commit message must follow the format: <type>: <description>"
+  echo "Allowed types: 'feat', 'fix', 'test', 'chore'"
+  exit 1
+fi
